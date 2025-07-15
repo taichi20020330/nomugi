@@ -33,7 +33,7 @@ export default function Home() {
 
   return (
     <main>
-      <h1>背景透過カメラ</h1>
+      <h1>ぷカメラ</h1>
 
       {/* スマホのカメラを即起動 */}
       <input
