@@ -1,1 +1,21 @@
-{"theme_color":"#4ab565","background_color":"#ffffff","icons":[{"purpose":"maskable","sizes":"512x512","src":"icon512.png","type":"image/png"},{"purpose":"any","sizes":"512x512","src":"icon512_rounded.png","type":"image/png"}],"orientation":"any","display":"standalone","dir":"auto","lang":"ja","name":"ぷかぷかカメラ","short_name":"ぷカメ"}
+{
+  "name": "ぷカメラ",
+  "short_name": "ぷカメラ",
+  "description": "ぷかぷか浮かばせることのできるカメラ",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
