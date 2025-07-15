@@ -2,33 +2,50 @@ import { useState } from 'react'
 
 export default function Home() {
   const [previews, setPreviews] = useState<string[]>([])
+  const [uploading, setUploading] = useState(false)
 
-  const handleUpload = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault()
-  const form = e.currentTarget // ←ここで先に退避
-  const formData = new FormData(form)
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
 
-  const res = await fetch('/api/remove-bg', {
-    method: 'POST',
-    body: formData,
-  })
-  if (!res.ok) {
-    alert('アップロード失敗')
-    return
+    const formData = new FormData()
+    formData.append('image', file)
+
+    setUploading(true)
+
+    const res = await fetch('/api/remove-bg', {
+      method: 'POST',
+      body: formData,
+    })
+
+    setUploading(false)
+
+    if (!res.ok) {
+      alert('アップロード失敗')
+      return
+    }
+
+    const blob = await res.blob()
+    const url = URL.createObjectURL(blob)
+    setPreviews((prev) => [...prev, url])
+    e.target.value = '' // ← 同じ画像をもう一度選んでも反応するようにリセット
   }
-  const blob = await res.blob()
-  const url = URL.createObjectURL(blob)
-  setPreviews((prev) => [...prev, url])
-  form.reset() // ←退避した form を使う！
-}
 
   return (
     <main>
-      <h1>背景透過テスト</h1>
-      <form onSubmit={handleUpload}>
-        <input type="file" name="image" accept="image/*" required />
-        <button type="submit">背景透過する</button>
-      </form>
+      <h1>背景透過カメラ</h1>
+
+      {/* スマホのカメラを即起動 */}
+      <input
+        type="file"
+        accept="image/*"
+        capture="environment"
+        onChange={handleChange}
+        style={{ marginBottom: '20px' }}
+      />
+
+      {uploading && <p>アップロード中...</p>}
+
       <div
         style={{
           display: 'flex',
@@ -45,19 +62,25 @@ export default function Home() {
             src={src}
             alt={`透過画像 ${i + 1}`}
             style={{
-              width: '200px',
-              position: 'relative',
+              width: '150px',
               animation: 'float 3s ease-in-out infinite',
               flexShrink: 0,
             }}
           />
         ))}
       </div>
+
       <style jsx>{`
         @keyframes float {
-          0% { transform: translateY(0); }
-          50% { transform: translateY(-20px); }
-          100% { transform: translateY(0); }
+          0% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-15px);
+          }
+          100% {
+            transform: translateY(0);
+          }
         }
       `}</style>
     </main>
