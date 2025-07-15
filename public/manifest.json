@@ -4,6 +4,7 @@
   "description": "ぷかぷか浮かばせることのできるカメラ",
   "start_url": "/",
   "display": "standalone",
+  "scope": "/",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
   "icons": [
